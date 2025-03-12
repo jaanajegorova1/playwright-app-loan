@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import {expect, Locator, Page} from "@playwright/test";
 import { Button } from "../atoms/Button";
 import { Input } from "../atoms/Input";
 
@@ -15,6 +15,7 @@ export class SmallLoanPage {
   readonly usernameInput: Input;
   readonly passwordInput: Input;
   readonly continueButton: Button;
+  readonly monthlyAmountSpan: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -23,12 +24,13 @@ export class SmallLoanPage {
     this.applyImage2 = new Button(page, "id-image-element-button-image-2");
     this.amountInput = new Input(page, "id-small-loan-calculator-field-amount");
     this.periodSelect = page.getByTestId(
-      "ib-small-loan-calculator-field-period",
+      "ib-small-loan-calculator-field-period"
     );
     this.periodOptions = this.periodSelect.locator("option");
     this.usernameInput = new Input(page, "login-popup-username-input");
     this.passwordInput = new Input(page, "login-popup-password-input");
     this.continueButton = new Button(page, "login-popup-continue-button");
+    this.monthlyAmountSpan = page.getByTestId("ib-small-loan-calculator-field-monthlyPayment");
   }
 
   async open(): Promise<void> {
@@ -39,5 +41,11 @@ export class SmallLoanPage {
     const allOptions = await this.periodOptions.all();
 
     return await allOptions[0].innerText();
+  }
+
+  async checkMonthlyAmount(expected: number): Promise<void> {
+    const innerText = await this.monthlyAmountSpan.innerText();  //100005 euro in response
+    const summ = +innerText.split(" ")[0]; //1-yj element massiva, to est v response 100005 bez evro znaka
+    expect(expected).toEqual(summ);
   }
 }
