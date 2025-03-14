@@ -16,6 +16,7 @@ export class SmallLoanPage {
   readonly passwordInput: Input;
   readonly continueButton: Button;
   readonly monthlyAmountSpan: Locator;
+  readonly errorMessage: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -33,6 +34,9 @@ export class SmallLoanPage {
     this.monthlyAmountSpan = page.getByTestId(
       "ib-small-loan-calculator-field-monthlyPayment",
     );
+    this.errorMessage = page.getByTestId(
+      "id-small-loan-calculator-field-error",
+    );
   }
 
   async open(): Promise<void> {
@@ -46,8 +50,18 @@ export class SmallLoanPage {
   }
 
   async checkMonthlyAmount(expected: number): Promise<void> {
-    const innerText = await this.monthlyAmountSpan.innerText(); //100005 euro in response
-    const summ = +innerText.split(" ")[0]; //1-yj element massiva, to est v response 100005 bez evro znaka
+    const innerText = await this.monthlyAmountSpan.innerText();
+    const summ = +innerText.split(" ")[0];
     expect(expected).toEqual(summ);
+  }
+
+  async checkErrorMessage(): Promise<void> {
+    await expect(this.errorMessage).toBeVisible();
+    await expect(this.errorMessage).toHaveText("Oops, something went wrong");
+  }
+
+  async checkUndefinedErrorMessage(): Promise<void> {
+    const undefinedErrorText = await this.monthlyAmountSpan.innerText();
+    expect(undefinedErrorText).toContain("undefined");
   }
 }
