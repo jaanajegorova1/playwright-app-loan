@@ -1,15 +1,20 @@
 {
-  "name": "playwright-app-loan",
+  "name": "playwright_app_loan",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "prettier:format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "prettier:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\""
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "description": "",
   "devDependencies": {
     "@playwright/test": "^1.50.1",
     "@types/node": "^22.13.9"
+  },
+  "dependencies": {
+    "prettier": "^3.5.2"
   }
 }
