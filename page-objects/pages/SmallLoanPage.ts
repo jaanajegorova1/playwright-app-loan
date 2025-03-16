@@ -31,12 +31,8 @@ export class SmallLoanPage {
     this.usernameInput = new Input(page, "login-popup-username-input");
     this.passwordInput = new Input(page, "login-popup-password-input");
     this.continueButton = new Button(page, "login-popup-continue-button");
-    this.monthlyAmountSpan = page.getByTestId(
-      "ib-small-loan-calculator-field-monthlyPayment",
-    );
-    this.errorMessage = page.getByTestId(
-      "id-small-loan-calculator-field-error",
-    );
+    this.monthlyAmountSpan = page.getByTestId("ib-small-loan-calculator-field-monthlyPayment");
+    this.errorMessage = page.getByTestId("id-small-loan-calculator-field-error");
   }
 
   async open(): Promise<void> {
